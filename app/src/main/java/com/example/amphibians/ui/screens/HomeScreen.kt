@@ -15,14 +15,20 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -87,13 +93,13 @@ fun AmphibiansScreen(
 ) {
     LazyColumn(
         modifier = modifier.padding(horizontal = 4.dp),
-        contentPadding = contentPadding
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         items(amphibians) { amphibian ->
             AmphibianCard(
                 amphibian,
-                modifier = modifier.padding(4.dp)
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxSize()
                 )
         }
     }
@@ -102,7 +108,14 @@ fun AmphibiansScreen(
 @Composable
 fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
     Card(modifier = modifier) {
-        Text(text = amphibian.name + "(" + amphibian.type + ")")
+        Text(
+            text = stringResource(R.string.amphibian_card_title,amphibian.name, amphibian.type),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = modifier.fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium))
+        )
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
                 .data(amphibian.impSrc)
@@ -114,7 +127,8 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxWidth()
         )
-        Text(text = amphibian.description)
+        Text(text = amphibian.description,
+            modifier = modifier.padding(dimensionResource(R.dimen.padding_medium)))
     }
 }
 
